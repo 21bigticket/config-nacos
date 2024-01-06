@@ -1,6 +1,6 @@
 {
-    "name": "hyperf/config-nacos",
-    "description": "A nacos adapter for config center component.",
+    "name": "owen/config-nacos",
+    "description": "A nacos adapter for config center component fork from hyperf/config-nacos",
     "license": "MIT",
     "keywords": [
         "php",

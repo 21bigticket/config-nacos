@@ -70,16 +70,30 @@ class NacosDriver extends AbstractDriver
 
     protected function updateConfig(array $config): void
     {
-        $root = $this->config->get('config_center.drivers.nacos.default_key');
-        foreach ($config as $key => $conf) {
-            if (is_int($key)) {
-                $key = $root;
+//        $root = $this->config->get('config_center.drivers.nacos.default_key');
+//        foreach ($config as $key => $conf) {
+//            if (is_int($key)) {
+//                $key = $root;
+//            }
+//            if (is_array($conf) && $this->config->get('config_center.drivers.nacos.merge_mode') === Constants::CONFIG_MERGE_APPEND) {
+//                $conf = Arr::merge($this->config->get($key, []), $conf);
+//            }
+//
+//            $this->config->set($key, $conf);
+//        }
+        $mergedConfigs = [];
+        foreach ($config as $c) {
+            foreach ($c as $key => $value) {
+                if (is_array($value) && $this->config->get('config_center.drivers.nacos.merge_mode') === Constants::CONFIG_MERGE_APPEND) {
+                    $value = Arr::merge($this->config->get($key, []), $value);
+                }
+                $mergedConfigs[$key] = $value;
             }
-            if (is_array($conf) && $this->config->get('config_center.drivers.nacos.merge_mode') === Constants::CONFIG_MERGE_APPEND) {
-                $conf = Arr::merge($this->config->get($key, []), $conf);
-            }
-
-            $this->config->set($key, $conf);
+        }
+        unset($config);
+        foreach ($mergedConfigs as $key => $value) {
+            $this->config->set($key, $value);
+            $this->logger->debug(sprintf('Config [%s] is updated', $key));
         }
     }
 }
