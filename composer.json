@@ -47,10 +47,8 @@
     "config": {
         "sort-packages": true
     },
+    "version": "0.1",
     "extra": {
-        "branch-alias": {
-            "dev-master": "3.1-dev"
-        },
         "hyperf": {
             "config": "Hyperf\\ConfigNacos\\ConfigProvider"
         }
